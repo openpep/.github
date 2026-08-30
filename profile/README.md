@@ -4,7 +4,7 @@
 
 <h1 align="center">OpenPEP</h1>
 
-<p align="center"><strong>O prontuário permanece legível fora do aplicativo.</strong></p>
+<p align="center"><strong>Finalmente um prontuário open-source, com dados primariamente locais e preparado para uso por agentes.</strong></p>
 
 O OpenPEP é um prontuário eletrônico ambulatorial open-source para consultórios médicos. O núcleo clínico roda localmente no Mac e guarda cada prontuário em um conjunto documentado de arquivos. Uma especificação pública orienta a leitura, a verificação e a recuperação desses dados.
 
