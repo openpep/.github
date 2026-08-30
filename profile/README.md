@@ -4,51 +4,40 @@
 
 <h1 align="center">OpenPEP</h1>
 
-<p align="center"><strong>O prontuário como pasta, não como plataforma.</strong></p>
+<p align="center"><strong>O prontuário permanece legível fora do aplicativo.</strong></p>
 
-O OpenPEP é um projeto de prontuário eletrônico ambulatorial open-source para consultórios médicos. O produto inicial segue uma arquitetura **local-first e filesystem-first**: o núcleo clínico roda no Mac e preserva o prontuário em arquivos portáteis, verificáveis e independentes do aplicativo.
+O OpenPEP é um prontuário eletrônico ambulatorial open-source para consultórios médicos. O núcleo clínico roda localmente no Mac e guarda cada prontuário em um conjunto documentado de arquivos. Uma especificação pública orienta a leitura, a verificação e a recuperação desses dados.
 
-> **Status: pré-alfa e prova de conceito.** O OpenPEP ainda não está pronto para uso clínico, não é certificado e não faz alegação de conformidade certificada. Todo dado de desenvolvimento e teste deve ser sintético.
+> **Status: pré-alfa.** O trabalho atual está concentrado na prova de conceito do formato. Uso clínico, dados reais e alegações de certificação ficam fora desta fase.
 
-## A ideia central
+## Como o prontuário é organizado
 
-O prontuário não deve desaparecer se o aplicativo, o fornecedor ou um serviço de nuvem deixarem de existir. Por isso:
+Cada paciente ocupa um diretório identificado por um código opaco. PDFs, imagens, áudios e materiais importados ficam preservados em `raw`. As notas revisadas pelo profissional ficam em `content`. A pasta `wiki` reúne uma visão reconstruível do histórico, sempre ligada às fontes que a sustentam. Uma área técnica registra hashes, eventos e versões do formato.
 
-- arquivos clínicos abertos preservam a fonte da verdade;
-- notas finalizadas não são silenciosamente reescritas — correções viram adendos;
-- alterações posteriores devem ser detectáveis por hashes, eventos e verificação de integridade;
-- abrir um paciente, consultar o histórico e registrar uma nota deve funcionar sem internet;
-- backup só conta quando a restauração pode ser comprovada;
-- inteligência artificial pode propor transcrições, resumos e rascunhos, mas um profissional precisa revisar e promover qualquer registro final.
+A finalização de uma nota gera um evento verificável. Correções posteriores criam adendos ligados ao documento original. Os índices de busca podem ser apagados e refeitos a partir dos arquivos do prontuário.
 
-## Produto inicial
+O fluxo clínico básico funciona offline. Serviços de nuvem podem receber cópias cifradas, acompanhadas por um procedimento de restauração testado. A continuidade do atendimento depende dos arquivos e das chaves mantidas pelo profissional.
 
-O primeiro recorte é deliberadamente estreito:
+## Primeiro produto
 
-1. **Vault clínico no Mac** — arquivos `raw`, `content`, `wiki` e uma área técnica de integridade.
-2. **Um escritor clínico por vault** — simplicidade e prevenção explícita de conflitos.
-3. **Recepção web separada** — cadastro, índice mestre de pacientes e agenda em um PostgreSQL operacional reconstruível, sem acesso a notas, anexos ou wiki clínica.
-4. **Recuperação como função central** — exportação completa, backup cifrado e restauração verificável.
-5. **IA controlada** — conteúdo derivado, rastreável e sempre subordinado à revisão humana.
+O recorte inicial atende um médico em um Mac, com uma recepcionista usando uma interface web separada. O Mac concentra os arquivos clínicos e a finalização das notas. A interface da recepção cuida do cadastro administrativo, do índice mestre de pacientes, da agenda, dos estados de visita e de pedidos encaminhados ao médico.
 
-O primeiro entregável será um **vault conformance kit**: especificação pública do formato, dados sintéticos, verificador de integridade, simulador de corrupção, exportador e restaurador. A interface Mac vem depois que o protocolo provar que o prontuário sobrevive sem ela.
+Essas rotinas operacionais usam um PostgreSQL pequeno, acessado por uma API com permissões próprias. O banco guarda dados administrativos e produz eventos que podem reconstruir seu estado. Notas, anexos, transcrições e resumos clínicos permanecem no cofre local do médico.
 
-## O que não entra no primeiro MVP
+A primeira entrega será um kit de validação do cofre clínico. Ele reunirá a especificação do formato, pacientes sintéticos, um verificador de integridade, testes de corrupção, exportação e restauração. O aplicativo para Mac começa depois dessa validação.
 
-- prontuário hospitalar ou suíte administrativa completa;
-- vários profissionais finalizando conteúdo clínico simultaneamente;
-- portal do paciente e chat assíncrono nativo;
-- vídeo ou áudio embutido no aplicativo;
-- sincronização bidirecional irrestrita entre vários Macs;
-- alteração automática de nota final por IA;
-- uso do Google Drive ou iCloud como substituto de banco ou de backup verificável.
+## Inteligência artificial
 
-## Princípios
+Transcrições, resumos e rascunhos entram como material derivado. Cada registro final exige revisão e aprovação do profissional. A wiki pode ser refeita a qualquer momento e cada afirmação deve apontar para uma fonte recuperável.
 
-**Portabilidade humana · funcionamento offline · segurança do paciente · privacidade · integridade verificável · recuperação testada · mínimo aprisionamento · transparência sobre limites**
+## Limites do primeiro MVP
 
-O desenvolvimento ocorre de forma incremental, com gates objetivos e exclusivamente com dados sintéticos. Código, especificações e orientações para contribuição serão publicados conforme a prova de conceito amadurecer.
+O primeiro MVP cobre um escritor clínico por cofre e uma pequena operação de recepção. Portal do paciente, chat assíncrono, vídeo embutido, sincronização clínica entre vários Macs, rotinas hospitalares e automação de conduta ficam para avaliações posteriores.
 
----
+Google Drive e iCloud podem transportar backups cifrados. O cofre ativo continua sob controle do aplicativo local, com disponibilidade offline e verificação de integridade.
 
-<p align="center">OpenPEP é software em desenvolvimento. Ele registra; não diagnostica, não prescreve e não substitui julgamento profissional.</p>
+## Desenvolvimento
+
+O projeto trabalha somente com dados sintéticos nesta etapa. Código, especificações e instruções para contribuição serão publicados conforme os testes do formato forem concluídos.
+
+<p align="center">O OpenPEP registra informações clínicas. Diagnóstico, prescrição e julgamento clínico permanecem sob responsabilidade profissional.</p>
